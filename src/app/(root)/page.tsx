@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ChevronRight, Moon, Send, Sun, Trash2, X } from 'lucide-react'
+import Image from 'next/image'
 
 type Message = {
   id: number;
@@ -130,7 +131,7 @@ export default function Component() {
         </div>
         <div className="flex-grow overflow-hidden">
           <div className="p-4">
-          <img 
+          <Image 
   ref={avatarRef}
   src={currentAvatar.imageUrl} 
   alt="DR HIRO Avatar" 
