@@ -1,12 +1,13 @@
-"use client"
+'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ScrollArea } from "@/components/ui/scroll-area"
+// import { ScrollArea } from "@/components/ui/scroll-area"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ChevronRight, Moon, Send, Sun, Trash2, X } from 'lucide-react'
-import Image from 'next/image'
+// import Image from 'next/image'
 
 type Message = {
   id: number;
@@ -14,25 +15,25 @@ type Message = {
   sender: 'user' | 'bot';
 };
 
-type AvatarMetadata = {
-  imageUrl: string;
-  mood: 'neutral' | 'happy' | 'thinking';
-};
+// type AvatarMetadata = {
+//   imageUrl: string;
+//   mood: 'neutral' | 'happy' | 'thinking';
+// };
 
-const avatarImages: AvatarMetadata[] = [
-  { 
-    imageUrl: "https://images.unsplash.com/photo-1667745009296-fae4f97bdf7d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y3J5cHRvJTIwYWl8ZW58MHx8MHx8fDA%3D",
-    mood: 'neutral'
-  },
-  { 
-    imageUrl: "https://images.unsplash.com/photo-1640143662254-689f48d1ac99?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNyeXB0byUyMGFpfGVufDB8fDB8fHww",
-    mood: 'happy'
-  },
-  { 
-    imageUrl: "https://images.unsplash.com/photo-1659710173823-b4362e0ab9c7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNyeXB0byUyMGFpfGVufDB8fDB8fHww",
-    mood: 'thinking'
-  }
-];
+// const avatarImages: AvatarMetadata[] = [
+//   { 
+//     imageUrl: "https://images.unsplash.com/photo-1667745009296-fae4f97bdf7d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y3J5cHRvJTIwYWl8ZW58MHx8MHx8fDA%3D",
+//     mood: 'neutral'
+//   },
+//   { 
+//     imageUrl: "https://images.unsplash.com/photo-1640143662254-689f48d1ac99?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNyeXB0byUyMGFpfGVufDB8fDB8fHww",
+//     mood: 'happy'
+//   },
+//   { 
+//     imageUrl: "https://images.unsplash.com/photo-1659710173823-b4362e0ab9c7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNyeXB0byUyMGFpfGVufDB8fDB8fHww",
+//     mood: 'thinking'
+//   }
+// ];
 
 export default function Component() {
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -41,9 +42,9 @@ export default function Component() {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
   const [isTyping, setIsTyping] = useState(false)
-  const [currentAvatar, setCurrentAvatar] = useState<AvatarMetadata>(avatarImages[0])
-  const [isAnimating, setIsAnimating] = useState(false)
-  const avatarRef = useRef<HTMLImageElement>(null)
+  // const [currentAvatar, setCurrentAvatar] = useState<AvatarMetadata>(avatarImages[0])
+  // const [isAnimating, setIsAnimating] = useState(false)
+  // const avatarRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -54,11 +55,11 @@ export default function Component() {
     document.documentElement.classList.toggle('dark', isDarkMode)
   }, [isDarkMode])
 
-  useEffect(() => {
-    if (isAnimating && avatarRef.current) {
-      avatarRef.current.addEventListener('animationend', () => setIsAnimating(false), { once: true })
-    }
-  }, [isAnimating])
+  // useEffect(() => {
+  //   if (isAnimating && avatarRef.current) {
+  //     avatarRef.current.addEventListener('animationend', () => setIsAnimating(false), { once: true })
+  //   }
+  // }, [isAnimating])
 
   const toggleDarkMode = () => setIsDarkMode(!isDarkMode)
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
@@ -78,9 +79,9 @@ export default function Component() {
         setMessages(prev => [...prev, botReply])
         
         // Change avatar image
-        const newIndex = (avatarImages.findIndex(avatar => avatar.imageUrl === currentAvatar.imageUrl) + 1) % avatarImages.length
-        setCurrentAvatar(avatarImages[newIndex])
-        setIsAnimating(true)
+        // const newIndex = (avatarImages.findIndex(avatar => avatar.imageUrl === currentAvatar.imageUrl) + 1) % avatarImages.length
+        // setCurrentAvatar(avatarImages[newIndex])
+        // setIsAnimating(true)
       } catch (error) {
         console.error('Error fetching bot response:', error)
       } finally {
@@ -129,25 +130,16 @@ export default function Component() {
             <X className="h-4 w-4" />
           </Button>
         </div>
-        <div className="flex-grow overflow-hidden">
-          <div className="p-4">
-          <Image 
-  ref={avatarRef}
-  src={currentAvatar.imageUrl} 
-  alt="DR HIRO Avatar" 
-  className={`w-40 h-40 mx-auto rounded-full border-4 ${moodStyles[currentAvatar.mood]} ${isAnimating ? 'avatar-change' : ''} shadow-lg hidden sm:block`}
- />
-
-          </div>
-          <ScrollArea className="h-[calc(100vh-13rem)] px-4">
-            <div className="mb-6">
-              <h2 className="font-bold mb-2 text-lg">About DR HIRO</h2>
-              <p className="text-sm opacity-80">DR HIRO is your expert cryptocurrency assistant, providing up-to-date information on prices, trends, and news.</p>
+        <div className="flex flex-col justify-between h-full p-4">
+          <div>
+            <div className="mb-4 sm:mb-6">
+              <h2 className="font-bold mb-2 text-base sm:text-lg">About DR HIRO</h2>
+              <p className="text-xs sm:text-sm opacity-80">DR HIRO is your expert cryptocurrency assistant, providing up-to-date information on prices, trends, and news.</p>
             </div>
-            <div className="mb-6">
-              <label htmlFor="model-select" className="block text-sm font-medium mb-2">Choose a model</label>
+            <div className="mb-4 sm:mb-6">
+              <label htmlFor="model-select" className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2">Choose a model</label>
               <Select value={selectedModel} onValueChange={setSelectedModel}>
-                <SelectTrigger id="model-select" className={`w-full ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-300'}`}>
+                <SelectTrigger id="model-select" className={`w-full text-xs sm:text-sm ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-300'}`}>
                   <SelectValue placeholder="Select a model" />
                 </SelectTrigger>
                 <SelectContent>
@@ -157,43 +149,51 @@ export default function Component() {
                 </SelectContent>
               </Select>
             </div>
-            <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
-              <h3 className="font-bold mb-3 text-lg">Tips for using Dr. Hiro</h3>
-              <ul className="text-sm space-y-2 list-disc list-inside">
-                <li>For live data, ask about current prices or market caps.</li>
-                <li>For historical data, specify a date in your query.</li>
-                <li>For news, mention 'news' or 'latest updates' in your query.</li>
-                <li>For general information, ask about concepts, technologies, or history.</li>
-              </ul>
+            <Accordion type="single" collapsible className="w-full mb-4 sm:mb-6">
+              <AccordionItem value="tips">
+                <AccordionTrigger className="text-sm sm:text-base font-bold">Tips for using Dr. Hiro</AccordionTrigger>
+                <AccordionContent>
+                  <ul className="text-xs sm:text-sm space-y-1 sm:space-y-2 list-disc list-inside">
+                    <li>For live data, ask about current prices or market caps.</li>
+                    <li>For historical data, specify a date in your query.</li>
+                    <li>For news, mention 'news' or 'latest updates' in your query.</li>
+                    <li>For general information, ask about concepts, technologies, or history.</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+          <div className="mt-auto">
+            <div className="mb-4 hidden sm:block">
+              <div 
+                className={`w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-gray-300 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-300'}`}
+              />
+              <p className="text-center mt-2 text-xs sm:text-sm font-medium">DR HIRO</p>
             </div>
-          </ScrollArea>
+            <Button variant="destructive" size="sm" onClick={() => setMessages([])} className="w-full text-xs sm:text-sm bg-red-600 hover:bg-red-700">
+              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" /> Clear Chat
+            </Button>
+          </div>
         </div>
       </div>
       <div className="flex-1 flex flex-col min-w-0">
-      <header className={`flex flex-wrap justify-between items-center p-4 border-b ${isDarkMode ? 'border-gray-700 bg-[#1E1E1E]' : 'border-gray-200 bg-white'}`}>
-  <div className="flex items-center mb-2 md:mb-0">
-    {!isSidebarOpen && (
-      <Button variant="ghost" size="icon" onClick={toggleSidebar} className="mr-2 hover:bg-gray-700 hover:text-gray-100">
-        <ChevronRight className="h-4 w-4" />
-      </Button>
-    )}
-    <h1 className={`text-lg sm:text-xl font-bold`}>DR HIRO - Your Cryptocurrency Chatbot 🤖</h1>
-  </div>
-  <div className="flex justify-between w-full items-center ">
-  <Button variant="destructive" size="sm" onClick={() => setMessages([])} className="bg-red-600 hover:bg-red-700">
-      <Trash2 className="h-4 w-4 mr-2" /> Clear Chat
-    </Button>
-    <Button variant="outline" size="icon" onClick={toggleDarkMode} className={isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}>
-      {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-    </Button>
-    
-  </div>
-</header>
-
-        <main className={`flex-1 overflow-auto p-4 ${isDarkMode ? 'bg-[#121212]' : 'bg-gray-50'}`}>
+        <header className={`flex flex-wrap justify-between items-center p-2 sm:p-4 border-b ${isDarkMode ? 'border-gray-700 bg-[#1E1E1E]' : 'border-gray-200 bg-white'}`}>
+          <div className="flex items-center mb-2 md:mb-0">
+            {!isSidebarOpen && (
+              <Button variant="ghost" size="icon" onClick={toggleSidebar} className="mr-2 hover:bg-gray-700 hover:text-gray-100">
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            )}
+            <h1 className={`text-base sm:text-lg md:text-xl font-bold`}>DR HIRO - Your Cryptocurrency Chatbot 🤖</h1>
+          </div>
+          <Button variant="outline" size="icon" onClick={toggleDarkMode} className={isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}>
+            {isDarkMode ? <Sun className="h-3 w-3 sm:h-4 sm:w-4" /> : <Moon className="h-3 w-3 sm:h-4 sm:w-4" />}
+          </Button>
+        </header>
+        <main className={`flex-1 overflow-auto p-2 sm:p-4 ${isDarkMode ? 'bg-[#121212]' : 'bg-gray-50'}`}>
           {messages.map((msg) => (
-            <div key={msg.id} className={`mb-4 ${msg.sender === 'user' ? 'text-right' : 'text-left'}`}>
-              <div className={`inline-block p-3 rounded-lg ${
+            <div key={msg.id} className={`mb-2 sm:mb-4 ${msg.sender === 'user' ? 'text-right' : 'text-left'}`}>
+              <div className={`inline-block p-2 sm:p-3 rounded-lg text-xs sm:text-sm ${
                 msg.sender === 'user' 
                   ? isDarkMode ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-900' 
                   : isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-900'
@@ -204,7 +204,7 @@ export default function Component() {
           ))}
           {isTyping && (
             <div className="text-left">
-              <div className={`inline-block p-3 rounded-lg ${isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-900'} shadow-md`}>
+              <div className={`inline-block p-2 sm:p-3 rounded-lg ${isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-900'} shadow-md`}>
                 <span className="typing-dot"></span>
                 <span className="typing-dot"></span>
                 <span className="typing-dot"></span>
@@ -212,17 +212,17 @@ export default function Component() {
             </div>
           )}
         </main>
-        <footer className={`p-4 border-t ${isDarkMode ? 'border-gray-700 bg-[#1E1E1E]' : 'border-gray-200 bg-white'}`}>
+        <footer className={`p-2 sm:p-4 border-t ${isDarkMode ? 'border-gray-700 bg-[#1E1E1E]' : 'border-gray-200 bg-white'}`}>
           <form onSubmit={handleSendMessage} className="flex gap-2">
             <Input
               type="text"
               placeholder="What would you like to know about cryptocurrencies?"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className={`flex-1 ${isDarkMode ? 'bg-gray-800 border-gray-700 text-gray-200' : 'bg-gray-50 border-gray-300 text-gray-900'}`}
+              className={`flex-1 text-xs sm:text-sm ${isDarkMode ? 'bg-gray-800 border-gray-700 text-gray-200' : 'bg-gray-50 border-gray-300 text-gray-900'}`}
             />
-            <Button type="submit" className={isDarkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'}>
-              <Send className="h-4 w-4 mr-2" /> Send
+            <Button type="submit" className={`text-xs sm:text-sm ${isDarkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'}`}>
+              <Send className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" /> Send
             </Button>
           </form>
         </footer>
@@ -230,84 +230,3 @@ export default function Component() {
     </div>
   )
 }
-
-
-
-//Documentation
-
-//To integrate this component with real API calls and message responses:
-
-//1) 1. Replace the simulated API call in `handleSendMessage` with your actual API call:
-//      try {
-//   const response = await fetch('YOUR_API_ENDPOINT', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({ message: message }),
-//   });
-//   const data = await response.json();
-//   const botReply: Message = { id: Date.now(), text: data.reply, sender: 'bot' };
-//   setMessages(prev => [...prev, botReply]);
-// } catch (error) {
-//   console.error('Error fetching bot response:', error);
-//   // Handle error (e.g., show error message to user)
-// }
-
-//2) If you need to load initial messages or conversation history, you can add another `useEffect` hook:
-
-// useEffect(() => {
-//     async function loadInitialMessages() {
-//       try {
-//         const response = await fetch('YOUR_HISTORY_API_ENDPOINT');
-//         const data = await response.json();
-//         setMessages(data.messages);
-//       } catch (error) {
-//         console.error('Error loading message history:', error);
-//         // Handle error
-//       }
-//     }
-//     loadInitialMessages();
-//   }, []);
-
-//3) For real-time updates, you will implement a WebSocket connection or use a polling mechanism within a `useEffect` hook.
-
-
-//To replace the avatar with real-time metadata from API responses, you would need to do the following:
-
-//1) Update the API Response Type:Define a type for your API response that includes metadata for the avatar:
-
-// type ApiResponse = {
-//     reply: string;
-//     avatarMetadata: {
-//       imageUrl: string;
-//       mood: string;
-//     };
-//   };
-
-//2) Update the `handleSendMessage` Function:Replace the simulated API call with a real one and use the returned metadata:
-
-// try {
-//     const response = await fetch('YOUR_API_ENDPOINT', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ message: message }),
-//     });
-//     const data: ApiResponse = await response.json();
-    
-//     const botReply: Message = { id: Date.now(), text: data.reply, sender: 'bot' };
-//     setMessages(prev => [...prev, botReply]);
-    
-//     // Update avatar based on API response
-//     setCurrentAvatar(data.avatarMetadata.imageUrl);
-    
-//     // You could also use the mood to apply different styles or animations
-//     // For example: setCurrentMood(data.avatarMetadata.mood);
-//   } catch (error) {
-//     console.error('Error fetching bot response:', error);
-//     // Handle error (e.g., show error message to user)
-//   }
-
-
