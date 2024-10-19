@@ -40,7 +40,7 @@ export default function Component() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [selectedModel, setSelectedModel] = useState('gpt')
   const [message, setMessage] = useState('')
-  const [messages, setMessages] = useState<Message[]>([])
+  const [messages, setMessages] = useState<Message[]>([]) //holding the chat messages
   const [isTyping, setIsTyping] = useState(false)
   // const [currentAvatar, setCurrentAvatar] = useState<AvatarMetadata>(avatarImages[0])
   // const [isAnimating, setIsAnimating] = useState(false)
@@ -49,11 +49,11 @@ export default function Component() {
   useEffect(() => {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     setIsDarkMode(prefersDark)
-  }, [])
+  }, [])  // Run only once on component mount to set initial dark mode state based on user's system preference
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDarkMode)
-  }, [isDarkMode])
+  }, [isDarkMode]) // Update the HTML element class based on dark mode state to apply global styles 
 
   // useEffect(() => {
   //   if (isAnimating && avatarRef.current) {
@@ -61,12 +61,12 @@ export default function Component() {
   //   }
   // }, [isAnimating])
 
-  const toggleDarkMode = () => setIsDarkMode(!isDarkMode)
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
+  const toggleDarkMode = () => setIsDarkMode(!isDarkMode) // Toggle dark mode state when the button is clicked
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen) // Toggle sidebar state when the button is clicked
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (message.trim()) {
+    if (message.trim()) { // Check if the message is not empty, trim is used to remove leading and trailing whitespaces
       const newMessage: Message = { id: Date.now(), text: message, sender: 'user' }
       setMessages(prev => [...prev, newMessage])
       setMessage('')
@@ -100,7 +100,7 @@ export default function Component() {
     <div className={`flex h-screen w-full overflow-hidden ${isDarkMode ? 'bg-[#121212] text-gray-200' : 'bg-gray-100 text-gray-900'}`}>
       <style jsx global>{`
         @keyframes wave {
-          0%, 100% { transform: translateY(0px); }
+          0%, 100% { transform: translateY(0px); } 
           25% { transform: translateY(-3px); }
           75% { transform: translateY(3px); }
         }
@@ -122,7 +122,7 @@ export default function Component() {
         .avatar-change {
           animation: avatarChange 0.5s ease-out;
         }
-      `}</style>
+      `}</style> 
       <div className={`${isSidebarOpen ? 'w-64 sm:w-72 md:w-80' : 'w-0'} transition-all duration-300 ease-in-out overflow-hidden flex flex-col h-full ${isDarkMode ? 'bg-[#1E1E1E] border-gray-700' : 'bg-white border-gray-200'} border-r`}>
         <div className="flex justify-between items-center p-4 border-b border-gray-700">
           <h2 className="font-bold text-lg">DR HIRO</h2>
@@ -168,6 +168,7 @@ export default function Component() {
               <div 
                 className={`w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-gray-300 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-300'}`}
               />
+              {/* Avatar goes in here */}
               <p className="text-center mt-2 text-xs sm:text-sm font-medium">DR HIRO</p>
             </div>
             <Button variant="destructive" size="sm" onClick={() => setMessages([])} className="w-full text-xs sm:text-sm bg-red-600 hover:bg-red-700">
